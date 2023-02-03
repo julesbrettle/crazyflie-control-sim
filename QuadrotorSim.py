@@ -130,7 +130,8 @@ class Quadrotor1D():
         self.sub5.set_ylabel('Thrust [N]')
         self.sub5.legend(fontsize=8)
         
-        plt.pause(0.075)
+        # plt.pause(0.075)
+        plt.pause(0.0001)
 
     def diff(self, array):
         init = np.array([0])
@@ -138,7 +139,7 @@ class Quadrotor1D():
             return init
         return np.append(init, np.diff(array)/self.time_delta )
 
-    def evaluator(self):
+    def evaluator(self, show_plot=True):
         num_index = len(self.sim_data.z_pos)
         t = np.linspace(0, num_index*self.time_delta, num_index)
         S = ct.step_info(self.sim_data.z_pos, t)
@@ -157,9 +158,12 @@ class Quadrotor1D():
         Steady State Error    = %.3f [m]\n' \
         %(self.pid_gains.kp, self.pid_gains.ki, self.pid_gains.kd, \
             rise_time, settling_time, overshoot, steadystate_error)
+        
+        print(textstr)
 
-        plt.gcf().text(0.15, 0.01, textstr, fontsize=12)
-        plt.subplots_adjust(bottom=0.25)
+        if show_plot:
+            plt.gcf().text(0.15, 0.01, textstr, fontsize=12)
+            plt.subplots_adjust(bottom=0.25)
 
-        plt.show(block=True)
+            plt.show(block=True)
 

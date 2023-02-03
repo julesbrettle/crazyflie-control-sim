@@ -18,6 +18,8 @@ class Controller1D():
         self.ki_z = pid_gains.ki
         self.kd_z = pid_gains.kd
 
+        self.sum_error = 0
+
     def compute_commands(self, setpoint, state):
         """
         Inputs:
@@ -30,9 +32,10 @@ class Controller1D():
 
         # your code here
         e_pos = setpoint.z_pos - state.z_pos
+        self.sum_error += e_pos
         e_vel = setpoint.z_vel - state.z_vel
         a_d = 0
-        a_c = a_d + self.kd_z*e_vel + self.kp_z*e_pos
+        a_c = a_d + self.kd_z*e_vel + self.kp_z*e_pos + self.ki_z*self.sum_error
         U = self.params.mass*(a_c - self.params.g)
 
         return U

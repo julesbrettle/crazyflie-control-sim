@@ -18,6 +18,7 @@ def run_sim(args):
     time_delta = 0.05
     curr_time = 0
     thrust = 0
+    show_plots = False
 
     # print information on cmd line
     print_info(sim_params)
@@ -40,12 +41,20 @@ def run_sim(args):
     state_estimator = StateEstimator1D(cfparams, init_state=state)
 
     # instantiate quadrotor simulation object
-    quad_sim = Quadrotor1D(state,
-                           pid_gains,
-                           cfparams,
-                           size=0.75,
-                           time_delta=time_delta,
-                           show_animation=sim_params.show_animation_flag)
+    if show_plots == True :
+        quad_sim = Quadrotor1D(state,
+                            pid_gains,
+                            cfparams,
+                            size=0.75,
+                            time_delta=time_delta,
+                            show_animation=sim_params.show_animation_flag)
+    else:
+        quad_sim = Quadrotor1D(state,
+                                pid_gains,
+                                cfparams,
+                                size=0.75,
+                                time_delta=time_delta,
+                                show_animation=False)
 
     # set the set_point/desired state
     set_point = State
@@ -83,7 +92,7 @@ def run_sim(args):
         curr_time += time_delta
 
     # evaluate the control performance
-    quad_sim.evaluator()
+    quad_sim.evaluator(show_plot=show_plots)
 
 
 
