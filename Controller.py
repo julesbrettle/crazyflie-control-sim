@@ -27,8 +27,12 @@ class Controller1D():
         Returns:
         - U (float): total upward thrust
         """
-        U = 0
 
         # your code here
+        e_pos = setpoint.z_pos - state.z_pos
+        e_vel = setpoint.z_vel - state.z_vel
+        a_d = 0
+        a_c = a_d + self.kd_z*e_vel + self.kp_z*e_pos
+        U = self.params.mass*(a_c - self.params.g)
 
         return U
