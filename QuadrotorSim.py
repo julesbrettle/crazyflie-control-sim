@@ -159,11 +159,13 @@ class Quadrotor1D():
         %(self.pid_gains.kp, self.pid_gains.ki, self.pid_gains.kd, \
             rise_time, settling_time, overshoot, steadystate_error)
         
-        print(textstr)
+        #print(textstr)
 
         if show_plot:
             plt.gcf().text(0.15, 0.01, textstr, fontsize=12)
             plt.subplots_adjust(bottom=0.25)
 
             plt.show(block=True)
+        
+        return rise_time, settling_time, overshoot, steadystate_error
 

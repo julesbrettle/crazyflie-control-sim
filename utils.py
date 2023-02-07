@@ -81,7 +81,7 @@ def parse_args(args):
     pid_gains = PIDGains()
     sim_params = SimulationParameters()
 
-    print(args)
+    # print(args)
 
     if len(args) < 2:
         return pid_gains, sim_params

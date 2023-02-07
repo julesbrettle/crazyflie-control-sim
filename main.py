@@ -21,7 +21,7 @@ def run_sim(args):
     show_plots = False
 
     # print information on cmd line
-    print_info(sim_params)
+    #print_info(sim_params)
 
     # get crazyflie params
     cfparams = CrazyflieParams()
@@ -92,7 +92,9 @@ def run_sim(args):
         curr_time += time_delta
 
     # evaluate the control performance
-    quad_sim.evaluator(show_plot=show_plots)
+    eval_results=quad_sim.evaluator(show_plot=show_plots)
+
+    return sim_params, eval_results
 
 
 
