@@ -18,7 +18,13 @@ class StateEstimator1D():
 
         # your code here
 
-        pass
+        self.params = params
+        self.init_state = init_state
+        self.prev_state = init_state
+
+        self.std = 0
+        self.std_f = .1
+        self.std_z = .1
         
 
     def compute(self, z_meas, U, time_delta):
@@ -36,6 +42,30 @@ class StateEstimator1D():
         """
         filtered_state = State()
 
-        # your code here
+        a = U / self.params.mass - self.params.g # system acceleration
+
+        # PREDICTION
+
+        mu_x = self.prev_state.z_pos + self.prev_state.z_vel * time_delta + .5 * a * time_delta ** 2
+        std_x_sq = self.std ** 2 + self.std_f ** 2
+
+        # UPDATE
+
+        # calculate K (kalman gain)
+
+        K = std_x_sq / (std_x_sq + self.std_z ** 2)
+
+        # calculate y (residual)
+
+        y = z_meas - mu_x
+
+        # correct prediction with measurement
+
+        filtered_state.z_pos = mu_x + K * y
+        filtered_state.z_vel = self.prev_state.z_vel + a * time_delta
+
+        self.prev_state = filtered_state
+
+        self.std = (std_x_sq * self.std_z) / (std_x_sq + self.std_z)
 
         return filtered_state
